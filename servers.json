@@ -1,12 +1,15 @@
 {
+
   "1213605934753124392": {
     "premium": false,
     "admin": false,
     "partner": false
   },
+
   "1303892463420706877": {
     "premium": true,
     "admin": true,
     "partner": true
   }
+  
 }
