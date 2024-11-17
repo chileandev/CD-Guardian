@@ -104,7 +104,7 @@ const startApp = async () => {
     const PORT = process.env.PORT || 3009;
 
     // Archivos estáticos (HTML, CSS, JS)
-    app.use(express.static(path.join(__dirname, 'views')));
+    app.use(express.static(path.join(__dirname, 'Page')));
 
     // Iniciar servidor Express
     app.listen(PORT, () => {
