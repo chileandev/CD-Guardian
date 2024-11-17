@@ -10,6 +10,11 @@ module.exports = {
         .setDescription('Te muestra una imagen de un gato tierno.'),
 
     async execute(interaction) {
+        // Verificar si el comando se está ejecutando en un servidor
+        if (!interaction.guild) {
+            return await interaction.reply('Este comando solo puede ser ejecutado en un servidor.');
+        }
+
         // Definir respuestas para diferentes idiomas
         const catResponses = {
             en: 'Here is a cute cat for you!',
@@ -19,11 +24,19 @@ module.exports = {
 
         // Cargar la configuración del idioma del servidor
         let botConf = { language: 'es' };  // Valor por defecto 'es'
+
+        // Ruta del archivo de configuración del servidor
+        const guildConfigPath = path.join(__dirname, '../../config', `${interaction.guild.id}.json`);
+
         try {
-            const guildConfigPath = path.join(__dirname, '../../config', `${interaction.guild.id}.json`);
-            botConf = JSON.parse(fs.readFileSync(guildConfigPath, 'utf8'));
+            // Verificar si el archivo de configuración existe
+            if (fs.existsSync(guildConfigPath)) {
+                botConf = JSON.parse(fs.readFileSync(guildConfigPath, 'utf8'));
+            } else {
+                console.log(`Archivo de configuración no encontrado para el servidor ${interaction.guild.id}. Usando configuración por defecto.`);
+            }
         } catch (error) {
-            console.error('Error al cargar los idiomas:', error);
+            console.error('Error al cargar el archivo de configuración:', error);
         }
 
         // Obtener el idioma del servidor, o 'es' como predeterminado
@@ -38,7 +51,7 @@ module.exports = {
         try {
             const response = await fetch(catAPIUrl);
             const data = await response.json();
-            catImageUrl = data[0].url;  // Extrae la URL de la imagen del gato
+            catImageUrl = data[0]?.url || 'https://example.com/fallback-cat-image.jpg';  // Usar una URL de respaldo si no se encuentra la imagen
         } catch (error) {
             console.error('Error al obtener la imagen del gato:', error);
             catImageUrl = 'https://example.com/fallback-cat-image.jpg';  // Imagen de respaldo en caso de error
@@ -49,9 +62,13 @@ module.exports = {
             .setColor(0x0099ff)
             .setTitle(language === 'en' ? 'Cute Cat' : language === 'br' ? 'Gato Fofo' : 'Gato Tierno')
             .setDescription(localizedResponse)
-         .setImage(catImageUrl);
+            .setImage(catImageUrl);
 
-        // Responder con el embed
-        await interaction.reply({ embeds: [embedMessage] });
+        try {
+            // Responder con el embed
+            await interaction.reply({ embeds: [embedMessage] });
+        } catch (error) {
+            console.error('Error al enviar la respuesta del embed:', error);
+        }
     }
 };

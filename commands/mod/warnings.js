@@ -43,7 +43,31 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
-        const member = interaction.options.getMember('member');
+        // Verificar si estamos en un servidor (guild)
+        if (!interaction.guild) {
+            return interaction.reply({
+                content: 'Este comando solo se puede usar en un servidor.',
+                ephemeral: true
+            });
+        }
+
+        // Obtener el miembro, usando fetch en caso de que no esté disponible directamente
+        const member = await interaction.guild.members.fetch(interaction.options.getUser('member').id).catch(error => {
+            console.error("Error al obtener el miembro:", error);
+            return null; // En caso de error, devolvemos null
+        });
+
+        if (!member) {
+            return interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor('#FF0000')
+                        .setTitle('Miembro no encontrado')
+                        .setDescription('No se pudo encontrar al miembro solicitado.')
+                ],
+                ephemeral: true
+            });
+        }
 
         // Ruta al archivo de configuración del servidor
         const configPath = path.join(__dirname, '../../config', `${interaction.guild.id}.json`);
@@ -61,18 +85,6 @@ module.exports = {
 
         // Configurar idioma de respuesta
         const lang = translations[language];
-
-        // Verificar si el miembro es válido
-        if (!member) {
-            return interaction.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor('#FFA500')
-                        .setTitle(lang.noWarnings)
-                ],
-                ephemeral: true,
-            });
-        }
 
         // Verificar y leer las advertencias del servidor
         const warningsPath = path.join(__dirname, '../../warnings');
