@@ -1,34 +1,14 @@
 body {
   font-family: Arial, sans-serif;
+  text-align: center;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
-  color: #333;
 }
 
-header {
-  background-color: #03b6fc;
-  padding: 1em;
-  text-align: center;
+a {
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #5865f2;
   color: white;
-}
-
-main {
-  padding: 2em;
-  text-align: center;
-}
-
-footer {
-  background-color: #03b6fc;
-  color: white;
-  text-align: center;
-  padding: 1em;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-#status p {
-  font-size: 1.2em;
-  margin: 0.5em 0;
+  border-radius: 5px;
 }

@@ -16,7 +16,10 @@
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "fs": "^0.0.1-security",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
     "path": "^0.12.7"
   },
   "description": ""
