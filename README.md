@@ -25,9 +25,9 @@ Sigue estos pasos para agregar **CD Guardian** a tu servidor de Discord:
 
 ## Comandos Disponibles
 
-- `/comando1`: Descripción del comando 1.
-- `/comando2`: Descripción del comando 2.
-- `/comando3`: Descripción del comando 3.
+- `/help`: Muestra los links de ayuda y los comandos del Bot.
+- `/ping`: Muestra la velocidad de respuesta del Bot.
+- `/premium`: Muestra los beneficios del Premium del Bot y como comprarlo.
 
 > **Nota**: Para más detalles sobre los comandos, visita nuestra [documentación completa](https://example.com/docs).
 
